@@ -29,6 +29,24 @@
       this.trigger('change');
     },
 
+    clearRowAndBelow: function(coordinate){
+      const board = this.attributes
+      const row = coordinate[0]
+      const col = coordinate[1];
+      for (let key in board){
+        if (key !== 'n'){
+          key = Number(key)
+        }
+        if (key >= row && key !== 'n'){
+          var array = board[key]
+          for (let i = 0; i < array.length; i++){
+            array[i] = 0;
+          }
+        }
+      }
+      board[row][col]===1 ? board[row][col] = 0: board[row][col] = 1;
+    },
+
     _getFirstRowColumnIndexForMajorDiagonalOn: function(rowIndex, colIndex) {
       return colIndex - rowIndex; //gives column number for piece that is in the first row that is on the current coordinate's major diagonal line; tells where to start diagonal check
     },
@@ -155,7 +173,7 @@
       var currCol = startCoordinate;
       var count = 0;
       //start at start coordinate
-      for (let i = 0; i < board.n; i++) {
+      for (let i = 0; i <= board.n; i++) {
         if (currCol < 0) {
           currRow += 1;
           currCol += 1;
@@ -203,7 +221,8 @@
       var currCol = startCoordinate;
       var count = 0;
       //start at start coordinate
-      for (let i = 0; i < board.n; i++) {
+      for (let i = 0; i < board.n+1; i++) {
+        debugger;
         if (currCol >= board.n) {
           currRow += 1;
           currCol -= 1;
@@ -213,10 +232,9 @@
             return true;
           }
           return false;
-        } else {
-          if (board[currRow][currCol] === 1) {
-            count+= 1;
-          }
+        }
+        if (board[currRow][currCol] === 1) {
+          count+= 1;
         }
         currRow += 1;
         currCol -= 1;
