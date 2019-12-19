@@ -30,11 +30,11 @@
     },
 
     _getFirstRowColumnIndexForMajorDiagonalOn: function(rowIndex, colIndex) {
-      return colIndex - rowIndex;
+      return colIndex - rowIndex; //should this be reversed w/ minorDiag?
     },
 
     _getFirstRowColumnIndexForMinorDiagonalOn: function(rowIndex, colIndex) {
-      return colIndex + rowIndex;
+      return colIndex + rowIndex; //should this be reversed w/ majorDiag?
     },
 
     hasAnyRooksConflicts: function() {
@@ -79,12 +79,29 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      //check if there are any
+      var board = this.attributes;
+      var row = board[rowIndex];
+      var count = _.reduce(row, function(acc, next) {return acc + next}, 0);
+      if (count > 1) {
+        return true;
+      } else {
+        return false;
+      }
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      //loop through the board's attributes, and run rowConflict on the value
+      var board = this.attributes;
+      for (let i = 0; i < board.n; i++) {
+        if (typeof board[i] !== 'number') {
+          if (this.hasRowConflictAt(i)) {
+            return true;
+          }
+        }
+      }
+      return false;
     },
 
 
@@ -94,12 +111,38 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      var board = this.attributes;
+      var col = [];
+      for (let key = 0; key < board.n; key++) {
+        col.push(board[key][colIndex]);
+      }
+      var count = _.reduce(col, function(acc, next) {return acc + next}, 0);
+      debugger;
+      if (count > 1) {
+        return true;
+      } else {
+        return false;
+      }
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      //convert board into array of arrays
+      var board = this.attributes;
+      var columns = [];
+      for (let i = 0; i < board.n; i++) {
+        var col = [];
+        for (let key = 0; key < board.n; key++) {
+          col.push(board[key][i]);
+        }
+        columns.push(col);
+      }
+      for (let j = 0; j < columns.length; j++) {
+        if (this.hasColConflictAt(j)) {
+          return true;
+        }
+      }
+      return false;
     },
 
 
@@ -108,12 +151,18 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
-    hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
+    hasMajorDiagonalConflictAt: function(coordinate) {
+      //start iterating at coordinate[0], then + 1
       return false; // fixme
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
+      //iterate across rows
+        //if rows has a 1
+          //store (x,y) or (row, col) and return to variable called result and call hasMajorDiagonalConflictAt on this coordinate
+          //if result = true
+            //return true
       return false; // fixme
     },
 
