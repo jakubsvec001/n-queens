@@ -204,7 +204,6 @@
       var count = 0;
       //start at start coordinate
       for (let i = 0; i < board.n; i++) {
-        debugger;
         if (currCol >= board.n) {
           currRow += 1;
           currCol -= 1;
@@ -230,7 +229,6 @@
       for (let i = 0; i < board.n; i++) {
         for (let j = 0; j < board[i].length; j++) {
           if (board[i][j] === 1) {
-            debugger;
             var startColumn = this._getFirstRowColumnIndexForMinorDiagonalOn(i, j);
             if (this.hasMinorDiagonalConflictAt(startColumn)) {
               return true;
