@@ -34,7 +34,7 @@
     },
 
     _getFirstRowColumnIndexForMinorDiagonalOn: function(rowIndex, colIndex) {
-      return colIndex + rowIndex; //should this be reversed w/ majorDiag?
+      return colIndex + rowIndex;
     },
 
     hasAnyRooksConflicts: function() {
@@ -117,7 +117,6 @@
         col.push(board[key][colIndex]);
       }
       var count = _.reduce(col, function(acc, next) {return acc + next}, 0);
-      debugger;
       if (count > 1) {
         return true;
       } else {
@@ -150,29 +149,25 @@
     // Major Diagonals - go from top-left to bottom-right
     // --------------------------------------------------------------
     //
-    // test if a specific major diagonal on this board contains a conflict
-    hasMajorDiagonalConflictAt: function(startCoordinate, endCoordinate) {
-      //find board
+    hasMajorDiagonalConflictAt: function(startCoordinate) {
       var board = this.attributes;
-      var currRow = startCoordinate[0];
-      var currCol = startCoordinate[1];
-      var endRow = endCoordinate[0];
-      var endCol = endCoordinate[1];
+      var currRow = 0;
+      var currCol = startCoordinate;
+      var count = 0;
       //start at start coordinate
-      for (let i = 0; i < endRow; i++) {
-        //if coordinate contains a negative # add 1 to row and column
-        if (currCol === -1) {
+      for (let i = 0; i < board.n; i++) {
+        if (currCol < 0) {
           currRow += 1;
           currCol += 1;
         }
-        //if startCoord = endCoord
-        if (currRow === endRow && currCol === endCol) {
-          //break;
+        if ((currRow === board.n) || (currCol === board.n)) {
+          if (count > 1) {
+            return true;
+          }
           return false;
         } else {
-          //check for conflict (if board @ coordinate has a 1, return true)
-          if (board[currCol][currRow] === 1) {
-            return true;
+          if (board[currRow][currCol] === 1) {
+            count+= 1;
           }
         }
         currRow += 1;
@@ -182,12 +177,17 @@
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      //iterate across each row
-        //iterate across each column
-          //if coordinate of (row, column) === 1
-            //use helper function to find beginning point to send to above function
-              //if above function returns true
-                //return true
+      var board = this.attributes;
+      for (let i = 0; i < board.n; i++) {
+        for (let j = 0; j < board[i].length; j++) {
+          if (board[i][j] === 1) {
+            var startColumn = this._getFirstRowColumnIndexForMajorDiagonalOn(i, j);
+            if (this.hasMajorDiagonalConflictAt(startColumn)) {
+              return true;
+            }
+          }
+        }
+      }
       return false;
     },
 
@@ -197,13 +197,48 @@
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
-    hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+    hasMinorDiagonalConflictAt: function(startCoordinate) {
+      var board = this.attributes;
+      var currRow = 0;
+      var currCol = startCoordinate;
+      var count = 0;
+      //start at start coordinate
+      for (let i = 0; i < board.n; i++) {
+        debugger;
+        if (currCol >= board.n) {
+          currRow += 1;
+          currCol -= 1;
+        }
+        if ((currRow === board.n) || (currCol < 0)) {
+          if (count > 1) {
+            return true;
+          }
+          return false;
+        } else {
+          if (board[currRow][currCol] === 1) {
+            count+= 1;
+          }
+        }
+        currRow += 1;
+        currCol -= 1;
+      }
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      var board = this.attributes;
+      for (let i = 0; i < board.n; i++) {
+        for (let j = 0; j < board[i].length; j++) {
+          if (board[i][j] === 1) {
+            debugger;
+            var startColumn = this._getFirstRowColumnIndexForMinorDiagonalOn(i, j);
+            if (this.hasMinorDiagonalConflictAt(startColumn)) {
+              return true;
+            }
+          }
+        }
+      }
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/

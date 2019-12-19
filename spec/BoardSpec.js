@@ -19,24 +19,24 @@ describe('Board', function() {
     });
   };
 
-  // describe('Empty board', function() {
-  //   verifyConflictTypes([''], [
-  //     [0, 0, 0, 0],
-  //     [0, 0, 0, 0],
-  //     [0, 0, 0, 0],
-  //     [0, 0, 0, 0]
-  //   ]);
-  // });
+  describe('Empty board', function() {
+    verifyConflictTypes([''], [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0]
+    ]);
+  });
 
 
-  // describe('Board with row conflicts', function() {
-  //   verifyConflictTypes(['row', 'rooks', 'queens'], [
-  //     [0, 0, 0, 0],
-  //     [1, 1, 0, 0],
-  //     [0, 0, 0, 0],
-  //     [0, 0, 0, 0]
-  //   ]);
-  // });
+  describe('Board with row conflicts', function() {
+    verifyConflictTypes(['row', 'rooks', 'queens'], [
+      [0, 0, 0, 0],
+      [1, 1, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0]
+    ]);
+  });
 
   describe('Board with col conflicts', function() {
     verifyConflictTypes(['col', 'rooks', 'queens'], [
@@ -64,13 +64,13 @@ describe('Board', function() {
   });
 
   describe('Board with minor diagonal conflicts', function() {
+    debugger;
     verifyConflictTypes(['minorDiagonal', 'queens'], [
       [0, 0, 1, 0],
       [0, 0, 0, 0],
       [1, 0, 0, 0],
       [0, 0, 0, 0]
     ]);
-
     verifyConflictTypes(['minorDiagonal', 'queens'], [
       [0, 0, 0, 0],
       [0, 0, 0, 0],
