@@ -30,7 +30,7 @@
     },
 
     _getFirstRowColumnIndexForMajorDiagonalOn: function(rowIndex, colIndex) {
-      return colIndex - rowIndex; //should this be reversed w/ minorDiag?
+      return colIndex - rowIndex; //gives column number for piece that is in the first row that is on the current coordinate's major diagonal line; tells where to start diagonal check
     },
 
     _getFirstRowColumnIndexForMinorDiagonalOn: function(rowIndex, colIndex) {
@@ -151,19 +151,44 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
-    hasMajorDiagonalConflictAt: function(coordinate) {
-      //start iterating at coordinate[0], then + 1
-      return false; // fixme
+    hasMajorDiagonalConflictAt: function(startCoordinate, endCoordinate) {
+      //find board
+      var board = this.attributes;
+      var currRow = startCoordinate[0];
+      var currCol = startCoordinate[1];
+      var endRow = endCoordinate[0];
+      var endCol = endCoordinate[1];
+      //start at start coordinate
+      for (let i = 0; i < endRow; i++) {
+        //if coordinate contains a negative # add 1 to row and column
+        if (currCol === -1) {
+          currRow += 1;
+          currCol += 1;
+        }
+        //if startCoord = endCoord
+        if (currRow === endRow && currCol === endCol) {
+          //break;
+          return false;
+        } else {
+          //check for conflict (if board @ coordinate has a 1, return true)
+          if (board[currCol][currRow] === 1) {
+            return true;
+          }
+        }
+        currRow += 1;
+        currCol += 1;
+      }
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      //iterate across rows
-        //if rows has a 1
-          //store (x,y) or (row, col) and return to variable called result and call hasMajorDiagonalConflictAt on this coordinate
-          //if result = true
-            //return true
-      return false; // fixme
+      //iterate across each row
+        //iterate across each column
+          //if coordinate of (row, column) === 1
+            //use helper function to find beginning point to send to above function
+              //if above function returns true
+                //return true
+      return false;
     },
 
 
