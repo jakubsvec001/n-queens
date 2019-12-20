@@ -222,7 +222,6 @@
       var count = 0;
       //start at start coordinate
       for (let i = 0; i < board.n+1; i++) {
-        debugger;
         if (currCol >= board.n) {
           currRow += 1;
           currCol -= 1;

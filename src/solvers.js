@@ -16,24 +16,48 @@
 
 
 window.findNRooksSolution = function(n) {
-  var solution = undefined; //fixme
-
+  var solutions = runN(n, 'rook')
+  if (solutions.length === 0) {
+    let finalSol = [];
+    let emptysolution = new Board({n});
+    for (let key in emptysolution.attributes) {
+      if (key !== 'n'){
+        let sol = emptysolution.attributes[key]
+        finalSol.push(sol.slice());
+      }
+    }
+    solution = finalSol;
+  } else {
+    var solution = solutions[0];
+  }
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutions = runN(n, 'rook');
 
-  console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
-  return solutionCount;
+  console.log('Number of solutions for ' + n + ' rooks:', solutions.length);
+  return solutions.length;
 };
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
-
+  var solutions = runN(n, 'queen')
+  if (solutions.length === 0) {
+    let finalSol = [];
+    let emptysolution = new Board({n});
+    for (let key in emptysolution.attributes) {
+      if (key !== 'n'){
+        let sol = emptysolution.attributes[key]
+        finalSol.push(sol.slice());
+      }
+    }
+    solution = finalSol;
+  } else {
+    var solution = solutions[0];
+  }
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
 };
@@ -42,8 +66,7 @@ window.findNQueensSolution = function(n) {
 
 window.countNQueensSolutions = function(n) {
   var solutions = runN(n, 'queen')
-
-  console.log('Number of solutions for ' + n + ' queens:', solutions.length);
+  // console.log('Number of solutions for ' + n + ' queens:', solutions.length);
   return solutions.length;
 };
 
@@ -52,9 +75,16 @@ const runN = function(n, type = 'queen') {
   const board = new Board({n:n});
   const successes = [];
   const traverse = function(board, row){
-    debugger;
     if (row === n){
-      successes.push(board)
+      const copyBoard = []
+      const solution = board.attributes;
+      for (let key in solution){
+        if (key !== 'n'){
+          let sol = solution[key]
+          copyBoard.push(sol.slice())
+        }
+      }
+      successes.push(copyBoard)
     } else {
       for (let col = 0; col < board.attributes.n; col++ ){
         board.clearRowAndBelow([row, col]);

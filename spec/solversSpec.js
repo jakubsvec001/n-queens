@@ -37,21 +37,22 @@ describe('solvers', function() {
 
     it('finds a valid solution for n of 0-7', function() {
       // Skip 2 and 3 because they have no solution.
-      [0, 1, 4, 5, 6, 7, 8].map(function(n) {
+      // [0, 1, 4, 5, 6, 7, 8]
+      [4].map(function(n) {
         var solutionBoard = new Board(findNQueensSolution(n));
         var numPieces = _.reduce(solutionBoard.rows(), function(memo, row) {
           return memo + _.reduce(row, function(memo, col) {
             return memo + col;
           }, 0);
         }, 0);
-
+        debugger;
         expect(solutionBoard.get('n')).to.equal(n);
         expect(numPieces).to.equal(n);
         expect(solutionBoard.hasAnyQueensConflicts()).to.be.equal(false);
       });
 
       // Check 2 and 3 for no solution
-      [2, 3].map(function (n) {
+      [3].map(function (n) {
         var solutionBoard = new Board(findNQueensSolution(n));
         var numPieces = _.reduce(solutionBoard.rows(), function(memo, row) {
           return memo + _.reduce(row, function(memo, col) {
